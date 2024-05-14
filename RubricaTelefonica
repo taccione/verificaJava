@@ -1,0 +1,168 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Contatto {
+    String nome; // nome del contatto
+    String cognome; // cognome del contatto
+    String numero; // numero di telefono del contatto
+    boolean nascosto; // il contatto è nascosto si o no
+
+    Contatto(String nome, String cognome, String numero, boolean nascosto) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.numero = numero;
+        this.nascosto = nascosto;
+    }
+
+    public String toString() {  // metodo per stampare il contatto a patto che non sia nascosto
+        if (nascosto) {
+            return "Contatto nascosto.";
+        } else {
+            return "Nome: " + nome + ", Cognome: " + cognome + ", Numero: " + numero;
+        }
+    }
+}
+
+public class RubricaTelefonica {
+    static ArrayList<Contatto> contatti = new ArrayList<>();
+    static ArrayList<String> ultimeChiamate = new ArrayList<>();
+    static Scanner tastiera = new Scanner(System.in);
+    static String password = "1234"; // password per sbloccare i contatti nascosti
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("1. Gestione Rubrica");
+            System.out.println("2. Gestione Chiamate");
+            System.out.println("3. Esci");
+            int scelta = tastiera.nextInt();
+            tastiera.nextLine(); // azzero il buffer
+            switch (scelta) {
+                case 1:
+                    gestioneRubrica();
+                    break;
+                case 2:
+                    gestioneChiamate();
+                    break;
+                case 3:
+                    System.exit(0);
+                default:
+                    System.out.println("Scelta non valida.");
+            }
+        }
+    }
+
+    public static void gestioneRubrica() { // prima parte del software: inserimento, modifica ed eliminazione del contatto nella rubrica
+        System.out.println("1. Aggiungi Contatto");
+        System.out.println("2. Modifica Contatto");
+        System.out.println("3. Elimina Contatto");
+        System.out.println("4. Visualizza Contatti");
+        int scelta = tastiera.nextInt();
+        tastiera.nextLine(); // azzero il buffer
+        switch (scelta) {
+            case 1:
+                aggiungiContatto();
+                break;
+            case 2:
+                modificaContatto();
+                break;
+            case 3:
+                eliminaContatto();
+                break;
+            case 4:
+                visualizzaContatti();
+                break;
+            default:
+                System.out.println("Scelta non valida.");
+        }
+    }
+
+    public static void aggiungiContatto() {
+        System.out.print("Inserisci nome: ");
+        String nome = tastiera.nextLine();
+        System.out.print("Inserisci cognome: ");
+        String cognome = tastiera.nextLine();
+        System.out.print("Inserisci numero di telefono: ");
+        String numero = tastiera.nextLine();
+        System.out.print("Vuoi nascondere il contatto? (s/n): ");
+        boolean nascosto = tastiera.nextLine().equalsIgnoreCase("s");
+        contatti.add(new Contatto(nome, cognome, numero, nascosto));
+    }
+
+    public static void modificaContatto() {
+        System.out.print("Inserisci il nome del contatto da modificare: ");
+        String nome = tastiera.nextLine();
+        for (Contatto contatto : contatti) {
+            if (contatto.nome.equals(nome)) {
+                System.out.print("Inserisci nuovo cognome: ");
+                contatto.cognome = tastiera.nextLine();
+                System.out.print("Inserisci nuovo numero di telefono: ");
+                contatto.numero = tastiera.nextLine();
+                System.out.print("Vuoi nascondere il contatto? (s/n): ");
+                contatto.nascosto = tastiera.nextLine().equalsIgnoreCase("s");
+                return;
+            }
+        }
+        System.out.println("Contatto non trovato.");
+    }
+
+    public static void eliminaContatto() {
+        System.out.print("Inserisci il nome del contatto da eliminare: ");
+        String nome = tastiera.nextLine();
+        contatti.removeIf(contatto -> contatto.nome.equals(nome));
+    }
+
+    static void visualizzaContatti() { // stampa del contatto
+        for (Contatto contatto : contatti) {
+            System.out.println(contatto);
+        }
+    }
+
+    public static void gestioneChiamate() { // seconda parte del software: visualizza ultime chiamate della rubrica
+        System.out.println("1. Aggiungi Chiamata");
+        System.out.println("2. Visualizza Ultime Chiamate");
+        int scelta = tastiera.nextInt();
+        tastiera.nextLine(); // Consuma newline
+        switch (scelta) {
+            case 1:
+                aggiungiChiamata();
+                break;
+            case 2:
+                visualizzaUltimeChiamate();
+                break;
+            default:
+                System.out.println("Scelta non valida.");
+        }
+    }
+
+    public static void aggiungiChiamata() {
+        System.out.print("Inserisci numero chiamato: ");
+        String numero = tastiera.nextLine();
+        ultimeChiamate.add(numero);
+    }
+
+    public static void visualizzaUltimeChiamate() {
+        for (String chiamata : ultimeChiamate) {
+            boolean trovato = false;
+            for (Contatto contatto : contatti) {
+                if (contatto.numero.equals(chiamata)) {
+                    if (contatto.nascosto) {
+                        System.out.print("Inserisci la password per visualizzare il contatto: ");
+                        String inputPassword = tastiera.nextLine();
+                        if (inputPassword.equals(password)) {
+                            System.out.println(contatto);
+                        } else {
+                            System.out.println("Password errata.");
+                        }
+                    } else {
+                        System.out.println(contatto);
+                    }
+                    trovato = true;
+                    break;
+                }
+            }
+            if (!trovato) {
+                System.out.println("Numero: " + chiamata);
+            }
+        }
+    }
+}
