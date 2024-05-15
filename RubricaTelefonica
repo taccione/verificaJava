@@ -105,7 +105,7 @@ public class RubricaTelefonica {
         System.out.println("Contatto non trovato.");
     }
 
-    public static void eliminaContatto() {
+    public static void eliminaContatto() { // metodo per eliminare un contatto creato
         System.out.print("Inserisci il nome del contatto da eliminare: ");
         String nome = tastiera.nextLine();
         contatti.removeIf(contatto -> contatto.nome.equals(nome));
@@ -134,7 +134,7 @@ public class RubricaTelefonica {
         }
     }
 
-    public static void aggiungiChiamata() {
+    public static void aggiungiChiamata() { 
         System.out.print("Inserisci numero chiamato: ");
         String numero = tastiera.nextLine();
         ultimeChiamate.add(numero);
