@@ -1,3 +1,6 @@
+// Diego Renesto
+// molti comandi sono stati eseguiti dal compiler. siccome mi dava errore, mi sono posizionato con il puntatore e con alt+masiusc+invio ha corretto il programma, nel codice ho segnato dove
+// ho successivamente cercato a cosa servisse quel comando
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -23,13 +26,14 @@ class Contatto {
     }
 }
 
-public class RubricaTelefonica {
+public class RubTelefonica {
     static ArrayList<Contatto> contatti = new ArrayList<>();
     static ArrayList<String> ultimeChiamate = new ArrayList<>();
     static Scanner tastiera = new Scanner(System.in);
     static String password = "1234"; // password per sbloccare i contatti nascosti
 
     public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
         while (true) {
             System.out.println("1. Gestione Rubrica");
             System.out.println("2. Gestione Chiamate");
@@ -51,7 +55,10 @@ public class RubricaTelefonica {
         }
     }
 
-    public static void gestioneRubrica() { // prima parte del software: inserimento, modifica ed eliminazione del contatto nella rubrica
+    // PRIMA PARTE DEL SOFTWARE
+    // inserimento, modifica ed eliminazione del contatto nella rubrica
+    public static void gestioneRubrica() {
+        Scanner tastiera = new Scanner(System.in);
         System.out.println("1. Aggiungi Contatto");
         System.out.println("2. Modifica Contatto");
         System.out.println("3. Elimina Contatto");
@@ -77,6 +84,7 @@ public class RubricaTelefonica {
     }
 
     public static void aggiungiContatto() {
+        Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci nome: ");
         String nome = tastiera.nextLine();
         System.out.print("Inserisci cognome: ");
@@ -84,15 +92,17 @@ public class RubricaTelefonica {
         System.out.print("Inserisci numero di telefono: ");
         String numero = tastiera.nextLine();
         System.out.print("Vuoi nascondere il contatto? (s/n): ");
-        boolean nascosto = tastiera.nextLine().equalsIgnoreCase("s");
-        contatti.add(new Contatto(nome, cognome, numero, nascosto));
+        boolean nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
+        RubTelefonica.contatti.add(new Contatto(nome, cognome, numero, nascosto)); // vado a prendere contatto e lo aggiungo nella rubrica
     }
 
     public static void modificaContatto() {
+        Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci il nome del contatto da modificare: ");
         String nome = tastiera.nextLine();
-        for (Contatto contatto : contatti) {
-            if (contatto.nome.equals(nome)) {
+        // ricerca di contatto all'interno della rubrica, funzione svolta dal compiler con alt+maiusc+invio
+        for (Contatto contatto : RubTelefonica.contatti) {
+            if (contatto.nome.equals(nome)) { // contatto trovato
                 System.out.print("Inserisci nuovo cognome: ");
                 contatto.cognome = tastiera.nextLine();
                 System.out.print("Inserisci nuovo numero di telefono: ");
@@ -106,18 +116,22 @@ public class RubricaTelefonica {
     }
 
     public static void eliminaContatto() { // metodo per eliminare un contatto creato
+        Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci il nome del contatto da eliminare: ");
         String nome = tastiera.nextLine();
-        contatti.removeIf(contatto -> contatto.nome.equals(nome));
+        RubTelefonica.contatti.removeIf(contatto -> contatto.nome.equals(nome)); // alt+maiusc+invio
     }
 
     static void visualizzaContatti() { // stampa del contatto
-        for (Contatto contatto : contatti) {
+        for (Contatto contatto : RubTelefonica.contatti) {
             System.out.println(contatto);
         }
     }
 
-    public static void gestioneChiamate() { // seconda parte del software: visualizza ultime chiamate della rubrica
+    // SECONDA PARTE DEL SOFTWARE
+    // gestione chiamate nella rubrica
+    public static void gestioneChiamate() {
+        Scanner tastiera = new Scanner(System.in);
         System.out.println("1. Aggiungi Chiamata");
         System.out.println("2. Visualizza Ultime Chiamate");
         int scelta = tastiera.nextInt();
@@ -134,21 +148,23 @@ public class RubricaTelefonica {
         }
     }
 
-    public static void aggiungiChiamata() { 
+    public static void aggiungiChiamata() {
+        Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci numero chiamato: ");
         String numero = tastiera.nextLine();
-        ultimeChiamate.add(numero);
+        RubTelefonica.ultimeChiamate.add(numero);
     }
 
     public static void visualizzaUltimeChiamate() {
-        for (String chiamata : ultimeChiamate) {
+        Scanner tastiera = new Scanner(System.in);
+        for (String chiamata : RubTelefonica.ultimeChiamate) {
             boolean trovato = false;
-            for (Contatto contatto : contatti) {
+            for (Contatto contatto : RubTelefonica.contatti) {
                 if (contatto.numero.equals(chiamata)) {
                     if (contatto.nascosto) {
                         System.out.print("Inserisci la password per visualizzare il contatto: ");
                         String inputPassword = tastiera.nextLine();
-                        if (inputPassword.equals(password)) {
+                        if (inputPassword.equals(RubTelefonica.password)) {
                             System.out.println(contatto);
                         } else {
                             System.out.println("Password errata.");
