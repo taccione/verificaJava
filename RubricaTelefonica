@@ -11,6 +11,7 @@ class Contatto {
     boolean nascosto; // il contatto è nascosto si o no
 
     Contatto(String nome, String cognome, String numero, boolean nascosto) {
+        // alt+maiusc+invio comando this.nome variabile
         this.nome = nome;
         this.cognome = cognome;
         this.numero = numero;
@@ -27,6 +28,7 @@ class Contatto {
 }
 
 public class RubTelefonica {
+    // alt+maiusc+invio ArrayList<tipo variabile> nome variabile con il quale indico vettori di lunghezza variabile
     static ArrayList<Contatto> contatti = new ArrayList<>();
     static ArrayList<String> ultimeChiamate = new ArrayList<>();
     static Scanner tastiera = new Scanner(System.in);
@@ -39,7 +41,7 @@ public class RubTelefonica {
             System.out.println("2. Gestione Chiamate");
             System.out.println("3. Esci");
             int scelta = tastiera.nextInt();
-            tastiera.nextLine(); // azzero il buffer
+            tastiera.nextLine(); // azzero il buffer, senza mi dava errore
             switch (scelta) {
                 case 1:
                     gestioneRubrica();
@@ -50,7 +52,7 @@ public class RubTelefonica {
                 case 3:
                     System.exit(0);
                 default:
-                    System.out.println("Scelta non valida.");
+                    System.out.println("Scelta non valida");
             }
         }
     }
@@ -79,28 +81,32 @@ public class RubTelefonica {
                 visualizzaContatti();
                 break;
             default:
-                System.out.println("Scelta non valida.");
+                System.out.println("Scelta non valida");
         }
     }
 
     public static void aggiungiContatto() {
         Scanner tastiera = new Scanner(System.in);
+        String nome;
+        String cognome;
+        int numero;
+        boolean nascosto;
         System.out.print("Inserisci nome: ");
-        String nome = tastiera.nextLine();
+        nome = tastiera.nextLine();
         System.out.print("Inserisci cognome: ");
-        String cognome = tastiera.nextLine();
+        cognome = tastiera.nextLine();
         System.out.print("Inserisci numero di telefono: ");
-        String numero = tastiera.nextLine();
+        numero = tastiera.nextInt();
         System.out.print("Vuoi nascondere il contatto? (s/n): ");
-        boolean nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
-        RubTelefonica.contatti.add(new Contatto(nome, cognome, numero, nascosto)); // vado a prendere contatto e lo aggiungo nella rubrica
+        nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
+        RubTelefonica.contatti.add(new Contatto(nome, cognome, numero, nascosto)); // vado a prendere contatto e lo aggiungo nella rubrica, alt+maiusc+invio
     }
 
     public static void modificaContatto() {
         Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci il nome del contatto da modificare: ");
         String nome = tastiera.nextLine();
-        // ricerca di contatto all'interno della rubrica, funzione svolta dal compiler con alt+maiusc+invio
+        // ricerca di contatto all'interno della rubrica, alt+maiusc+invio
         for (Contatto contatto : RubTelefonica.contatti) {
             if (contatto.nome.equals(nome)) { // contatto trovato
                 System.out.print("Inserisci nuovo cognome: ");
@@ -108,11 +114,11 @@ public class RubTelefonica {
                 System.out.print("Inserisci nuovo numero di telefono: ");
                 contatto.numero = tastiera.nextLine();
                 System.out.print("Vuoi nascondere il contatto? (s/n): ");
-                contatto.nascosto = tastiera.nextLine().equalsIgnoreCase("s");
+                contatto.nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
                 return;
             }
         }
-        System.out.println("Contatto non trovato.");
+        System.out.println("Contatto non trovato");
     }
 
     public static void eliminaContatto() { // metodo per eliminare un contatto creato
@@ -135,7 +141,7 @@ public class RubTelefonica {
         System.out.println("1. Aggiungi Chiamata");
         System.out.println("2. Visualizza Ultime Chiamate");
         int scelta = tastiera.nextInt();
-        tastiera.nextLine(); // Consuma newline
+        tastiera.nextLine(); // azzero il buffer
         switch (scelta) {
             case 1:
                 aggiungiChiamata();
@@ -144,7 +150,7 @@ public class RubTelefonica {
                 visualizzaUltimeChiamate();
                 break;
             default:
-                System.out.println("Scelta non valida.");
+                System.out.println("Scelta non valida");
         }
     }
 
@@ -152,19 +158,19 @@ public class RubTelefonica {
         Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci numero chiamato: ");
         String numero = tastiera.nextLine();
-        RubTelefonica.ultimeChiamate.add(numero);
+        RubTelefonica.ultimeChiamate.add(numero); // alt+maisuc+invio
     }
 
     public static void visualizzaUltimeChiamate() {
         Scanner tastiera = new Scanner(System.in);
-        for (String chiamata : RubTelefonica.ultimeChiamate) {
+        for (String chiamata : RubTelefonica.ultimeChiamate) { // alt+maisuc+invio
             boolean trovato = false;
-            for (Contatto contatto : RubTelefonica.contatti) {
-                if (contatto.numero.equals(chiamata)) {
+            for (Contatto contatto : RubTelefonica.contatti) { // alt+maisuc+invio
+                if (contatto.numero.equals(chiamata)) { // alt+maisuc+invio
                     if (contatto.nascosto) {
                         System.out.print("Inserisci la password per visualizzare il contatto: ");
                         String inputPassword = tastiera.nextLine();
-                        if (inputPassword.equals(RubTelefonica.password)) {
+                        if (inputPassword.equals(RubTelefonica.password)) { // alt+maisuc+invio
                             System.out.println(contatto);
                         } else {
                             System.out.println("Password errata.");
