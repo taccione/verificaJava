@@ -10,13 +10,13 @@ class Contatto {
     String numero; // numero di telefono del contatto
     boolean nascosto; // il contatto è nascosto si o no
 
-    Contatto(String nome, String cognome, String numero, boolean nascosto) {
-        // alt+maiusc+invio comando this.nome variabile
-        this.nome = nome;
+    Contatto(String nome, String cognome, double numero, boolean nascosto) {
+        this.nome = nome; // restituisco la variabile di testo, alt+maiusc+invio
         this.cognome = cognome;
-        this.numero = numero;
+        this.numero = String.valueOf(numero); // restituisco la variabile intera, alt+maiusc+invio
         this.nascosto = nascosto;
     }
+
 
     public String toString() {  // metodo per stampare il contatto a patto che non sia nascosto
         if (nascosto) {
