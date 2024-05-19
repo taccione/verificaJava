@@ -9,7 +9,7 @@ public class OrdinamentoPari {
         do {
             System.out.print("Inserisci la dimensione dell'array (tra 8 e 10): ");
             n = tastiera.nextInt();
-        } while (n < 8 || n > 10);
+        } while (n < 8 || n > 10); 
 
         int[] array = new int[n];
 
