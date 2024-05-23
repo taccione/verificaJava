@@ -1,38 +1,26 @@
 // Diego Renesto
+// utilizzato le liste poiche vettori di dimensione variabile, con i vettori non mi veniva e ho cercato un metodo piu funzionale
 // molti comandi sono stati eseguiti dal compiler. siccome mi dava errore, mi sono posizionato con il puntatore e con alt+masiusc+invio ha corretto il programma, nel codice ho segnato dove
 // ho successivamente cercato a cosa servisse quel comando
 import java.util.ArrayList;
 import java.util.Scanner;
 
 class Contatto {
-    String nome; // nome del contatto
-    String cognome; // cognome del contatto
-    String numero; // numero di telefono del contatto
-    boolean nascosto; // il contatto è nascosto si o no
+    String nome; 
+    String cognome;
+    String numero; 
+    boolean nascosto;
 
     Contatto(String nome, String cognome, double numero, boolean nascosto) {
-        this.nome = nome; // restituisco la variabile di testo, alt+maiusc+invio
-        this.cognome = cognome;
-        this.numero = String.valueOf(numero); // restituisco la variabile intera, alt+maiusc+invio
-        this.nascosto = nascosto;
     }
-
-
-    public String toString() {  // metodo per stampare il contatto a patto che non sia nascosto
-        if (nascosto) {
-            return "Contatto nascosto.";
-        } else {
-            return "Nome: " + nome + ", Cognome: " + cognome + ", Numero: " + numero;
-        }
-    }
+    
 }
 
 public class RubTelefonica {
-    // alt+maiusc+invio ArrayList<tipo variabile> nome variabile con il quale indico vettori di lunghezza variabile
     static ArrayList<Contatto> contatti = new ArrayList<>();
     static ArrayList<String> ultimeChiamate = new ArrayList<>();
-    static Scanner tastiera = new Scanner(System.in);
-    static String password = "1234"; // password per sbloccare i contatti nascosti
+    Scanner tastiera = new Scanner(System.in);
+    static String password = "1234"; // password per sbloccare i contatti nascosti, dichiarata come static per essere utilizzata all'interno di metodi static
 
     public static void main(String[] args) {
         Scanner tastiera = new Scanner(System.in);
@@ -41,13 +29,12 @@ public class RubTelefonica {
             System.out.println("2. Gestione Chiamate");
             System.out.println("3. Esci");
             int scelta = tastiera.nextInt();
-            tastiera.nextLine(); // azzero il buffer, senza mi dava errore
             switch (scelta) {
                 case 1:
-                    gestioneRubrica();
+                    GestioneRubrica();
                     break;
                 case 2:
-                    gestioneChiamate();
+                    GestioneChiamate();
                     break;
                 case 3:
                     System.exit(0);
@@ -59,7 +46,7 @@ public class RubTelefonica {
 
     // PRIMA PARTE DEL SOFTWARE
     // inserimento, modifica ed eliminazione del contatto nella rubrica
-    public static void gestioneRubrica() {
+    public static void GestioneRubrica() {
         Scanner tastiera = new Scanner(System.in);
         System.out.println("1. Aggiungi Contatto");
         System.out.println("2. Modifica Contatto");
@@ -69,111 +56,110 @@ public class RubTelefonica {
         tastiera.nextLine(); // azzero il buffer
         switch (scelta) {
             case 1:
-                aggiungiContatto();
+                AggiungiContatto();
                 break;
             case 2:
-                modificaContatto();
+                ModificaContatto();
                 break;
             case 3:
-                eliminaContatto();
+                EliminaContatto();
                 break;
             case 4:
-                visualizzaContatti();
+                VisualizzaContatti();
                 break;
             default:
                 System.out.println("Scelta non valida");
         }
     }
 
-    public static void aggiungiContatto() {
+    public static void AggiungiContatto() {
         Scanner tastiera = new Scanner(System.in);
         String nome;
         String cognome;
         int numero;
         boolean nascosto;
         System.out.print("Inserisci nome: ");
-        nome = tastiera.nextLine();
+        nome = tastiera.next();
         System.out.print("Inserisci cognome: ");
-        cognome = tastiera.nextLine();
+        cognome = tastiera.next();
         System.out.print("Inserisci numero di telefono: ");
         numero = tastiera.nextInt();
         System.out.print("Vuoi nascondere il contatto? (s/n): ");
         nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
-        RubTelefonica.contatti.add(new Contatto(nome, cognome, numero, nascosto)); // vado a prendere contatto e lo aggiungo nella rubrica, alt+maiusc+invio
+        contatti.add(new Contatto(nome, cognome, numero, nascosto));
+
     }
 
-    public static void modificaContatto() {
+    public static void ModificaContatto() {
         Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci il nome del contatto da modificare: ");
         String nome = tastiera.nextLine();
         // ricerca di contatto all'interno della rubrica, alt+maiusc+invio
-        for (Contatto contatto : RubTelefonica.contatti) {
+        for (Contatto contatto : contatti) {
             if (contatto.nome.equals(nome)) { // contatto trovato
                 System.out.print("Inserisci nuovo cognome: ");
-                contatto.cognome = tastiera.nextLine();
+                contatto.cognome = tastiera.next();
                 System.out.print("Inserisci nuovo numero di telefono: ");
-                contatto.numero = tastiera.nextLine();
+                contatto.numero = tastiera.next();
                 System.out.print("Vuoi nascondere il contatto? (s/n): ");
-                contatto.nascosto = tastiera.nextLine().equalsIgnoreCase("s"); // alt+maiusc+invio
-                return;
+                contatto.nascosto = tastiera.next().equalsIgnoreCase("s"); // alt+maiusc+invio
             }
         }
         System.out.println("Contatto non trovato");
     }
 
-    public static void eliminaContatto() { // metodo per eliminare un contatto creato
+    public static void EliminaContatto() {
         Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci il nome del contatto da eliminare: ");
-        String nome = tastiera.nextLine();
-        RubTelefonica.contatti.removeIf(contatto -> contatto.nome.equals(nome)); // alt+maiusc+invio
+        String nome = tastiera.next();
+        contatti.removeIf(contatto -> contatto.nome.equals(nome)); // alt+maiusc+invio
     }
 
-    static void visualizzaContatti() { // stampa del contatto
-        for (Contatto contatto : RubTelefonica.contatti) {
+    static void VisualizzaContatti() {
+        for (Contatto contatto : contatti) {
             System.out.println(contatto);
         }
     }
 
     // SECONDA PARTE DEL SOFTWARE
     // gestione chiamate nella rubrica
-    public static void gestioneChiamate() {
+    public static void GestioneChiamate() {
         Scanner tastiera = new Scanner(System.in);
         System.out.println("1. Aggiungi Chiamata");
         System.out.println("2. Visualizza Ultime Chiamate");
         int scelta = tastiera.nextInt();
-        tastiera.nextLine(); // azzero il buffer
         switch (scelta) {
             case 1:
-                aggiungiChiamata();
+                AggiungiChiamata();
                 break;
             case 2:
-                visualizzaUltimeChiamate();
+                VisualizzaUltimeChiamate();
                 break;
             default:
                 System.out.println("Scelta non valida");
         }
     }
 
-    public static void aggiungiChiamata() {
+    public static void AggiungiChiamata() {
         Scanner tastiera = new Scanner(System.in);
         System.out.print("Inserisci numero chiamato: ");
         String numero = tastiera.nextLine();
-        RubTelefonica.ultimeChiamate.add(numero); // alt+maisuc+invio
+        ultimeChiamate.add(numero);
     }
 
-    public static void visualizzaUltimeChiamate() {
+    public static void VisualizzaUltimeChiamate() {
         Scanner tastiera = new Scanner(System.in);
-        for (String chiamata : RubTelefonica.ultimeChiamate) { // alt+maisuc+invio
+        for (String chiamata : ultimeChiamate) { // alt+maisuc+invio
             boolean trovato = false;
-            for (Contatto contatto : RubTelefonica.contatti) { // alt+maisuc+invio
-                if (contatto.numero.equals(chiamata)) { // alt+maisuc+invio
+            for (Contatto contatto : contatti) { // alt+maisuc+invio
+                if (contatto.numero.equals(chiamata)) {
                     if (contatto.nascosto) {
                         System.out.print("Inserisci la password per visualizzare il contatto: ");
-                        String inputPassword = tastiera.nextLine();
-                        if (inputPassword.equals(RubTelefonica.password)) { // alt+maisuc+invio
+                        String inserisciPassword = tastiera.next();
+                        if (inserisciPassword.equals(password)) { 
                             System.out.println(contatto);
                         } else {
-                            System.out.println("Password errata.");
+                            System.out.println("Password errata");
                         }
                     } else {
                         System.out.println(contatto);
